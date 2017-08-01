@@ -28,25 +28,31 @@
         <script src="lib/angular/angular-locale_pt-br.js"></script>
         <script>
             angular.module("listaTelefonica",["ngMessages"]);
-            angular.module("listaTelefonica").controller("listaTelefonicaCtrl",function($scope, $filter){
+            angular.module("listaTelefonica").controller("listaTelefonicaCtrl",function($scope, $filter,$http){
                 $scope.app="Lista Telefonica";
-                $scope.contatos=[
-                    {nome: $filter('uppercase')("Pedro")   ,data: new Date()   ,telefone:"99998888",operadora: {nome: "Oi", codigo: 14, categoria: "Celular"}  ,cor:"blue"},
-                    {nome: $filter('uppercase')("Ana")     ,data:new  Date()   ,telefone:"99998877",operadora: {nome: "Vivo", codigo: 15, categoria: "Celular"},cor:"yellow"},
-                    {nome: $filter('uppercase')("Maria")   ,data:new  Date()   ,telefone:"99998866",operadora: {nome: "Tim", codigo: 41, categoria: "Celular"} ,cor:"green"}
-                ];
-                $scope.operadoras=[
-                    {nome:"Oi"         , codigo: 14,   categoria:"Celular"  , preco: 2},
-                    {nome:"Vivo"       , codigo: 15,   categoria:"Celular"  , preco: 1},
-                    {nome:"Tim"        , codigo: 41,   categoria:"Celular"  , preco: 3},
-                    {nome:"Claro"      , codigo: 31,   categoria:"Celular"  , preco: 4},
-                    {nome:"GVT"        , codigo: 25,   categoria:"Fixo"     , preco: 4},
-                    {nome:"Embratel"   , codigo: 21,   categoria:"Fixo"     , preco: 3}
-                ];
+                $scope.contatos = [];
+                $scope.operadoras=[];
+                
+                var carregarContatos = function(){
+                    $http.get("http://localhost:3412/contatos").then(function (data){
+                        $scope.contatos = data.data;
+                    },function(data,status){
+                        $scope.message = "Aconteceu um problema: " + data.status+ " - " +  data.statusText  ;
+                    });
+                };
+
+                var carregarOperadoras = function(){
+                    $http.get("http://localhost:3412/operadoras").then(function(data){
+                        $scope.operadoras = data.data;
+                    });
+                };
                 $scope.adicionarContato= function(contato) {
-                    $scope.contatos.push(angular.copy(contato));
-                    delete $scope.contato;
-                    $scope.contatoForm.$setPristine();
+                   contato.data = new Date();
+                   $http.post("http://localhost:3412/contatos",contato).then(function (data){
+                        delete $scope.contato;
+                        $scope.contatoForm.$setPristine();
+                        carregarContatos();
+                   })
                 };
                 $scope.apagarContatos = function(contatos){
                    $scope.contatos =  contatos.filter(function(contato){
@@ -62,12 +68,15 @@
                     $scope.criterioDeOrdenacao = campo;
                     $scope.direcaoDaOrdenacao = !$scope.direcaoDaOrdenacao;
                 };
+                carregarContatos();
+                carregarOperadoras();
             });
         </script>
     </head>
 <body ng-controller="listaTelefonicaCtrl">
     <div class="jumbotron">
         <h3>{{app}}</h3>
+        {{message}}
         <input class = "form-control" type="text" ng-model="criterioDeBusca" placeholder="Digite a sua busca"/>
         <table ng-show="contatos.length > 0 " class="table">
             <tr>

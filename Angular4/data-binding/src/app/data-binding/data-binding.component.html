@@ -1,5 +1,5 @@
-<section class="property-binding">
-  <!--article>
+<!--section class="property-binding">
+  <rticle>
     <h3>Interpolação</h3>
     <p>String renderizada com a Interpolação:{{url}}</p>
     <p>Resultado de 1+ 1 : {{1+1}}</p>
@@ -39,7 +39,7 @@
             Esse texto somente aparece em caso de erro.
         </div>
     </div>
-  </article-->
+  </article>
   <article>
     <h3>Event Binding</h3>
     <div>
@@ -55,6 +55,25 @@
       <span (mouseover) = "onMouseOverOut()" 
       (mouseout) = "onMouseOverOut()" 
       [class.highlight]= "isMouseOver">Passe o mouse sobre mim</span>
+    </div>
+  </article>
+</section-->
+
+<section class="two-way-binding">
+  <article>
+    <h3>two-way-binding</h3>
+    <div>
+      <input type="text" 
+      [value]="nome"
+      (input)="nome = $event.target.value"/>
+
+      <input type="text"  [(ngModel)]="nome">
+
+      <p>voce digitou o {{nome}}</p>
+    </div>
+    <div>
+       <input type="text" [(ngModel)]="pessoa.nome" >
+       <input type="text" [(ngModel)]="pessoa.idade" >
     </div>
   </article>
 </section>

@@ -1,4 +1,5 @@
-## AngularJs ![Imagem do Logo do Angular](./Angular/angular.png)
+## AngularJs 
+![Imagem do Logo do Angular](./Angular/angular.png)
 
 Projeto para estudo pessoal de Angular, foi divido nas versões do Angular:
 

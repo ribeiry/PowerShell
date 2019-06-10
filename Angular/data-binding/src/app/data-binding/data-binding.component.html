@@ -15,22 +15,30 @@
     <h3>Class e Style Binding</h3>
     <div>
       Selecione uma classe:
-      <select #classe(change)>
-        <option class="alert-sucess">Sucesso</option>
-        <option class="alert-info">Info</option>
-        <option class="alert-warning">Alerta</option>
-        <option class="alert-danger">Erro</option>
+      <select #classe (change)="0">
+        <option value="alert-success">Sucesso</option>
+        <option value="alert-info">Info</option>
+        <option value="alert-warning">warning</option>
+        <option value="alert-danger">Erro</option>
       </select>
       <br><br>
 
-      <div class="alert" role="sucess"
-        [class.alert-sucess] ="classe.value == 'alert-sucess'">
-      Sucesso</div>
-      <div class="alert" role="info"
-      [class.alert-info] ="classe.value == 'alert-info'">
-      Info</div>
-      <div class="alert" role="warning">Alerta</div>
-      <div class="alert" role="danger">Erro</div>
+      <div class="alert {{classe.value}}" role="alert">
+        Texto colorido conforme valor da combobox.
+      </div>
+
+      <div class="alert" role="alert" 
+      [class.alert-success]="classe.value == 'alert-sucess'"> Sucesso</div>
+      <div class="alert" role="alert"
+      [class.alert-info]="classe.value == 'alert-info'">  Info</div>
+      <div class="alert" role="alert" 
+      [class.alert-warning]="classe.value == 'alert-warning'">warning</div>
+      <div class="alert" role="alert"
+      [class.alert-danger]="classe.value == 'alert-danger'">Erro</div>
+
+      <div class="alert alert-danger" role="alert" [style.display] ="classe.value =='alert-danger' ? 'block' : 'none'"
+      >Esse texto ira aparecer apenas em caso de erro</div>
+
 
     </div>
   </article>
